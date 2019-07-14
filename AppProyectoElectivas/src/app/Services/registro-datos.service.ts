@@ -22,6 +22,11 @@ export class RegistroDatosService {
       'Content-Type': 'application/json'
     })
   }
+  httpOptionsPDF = {
+    headers: new HttpHeaders({
+      'Content-Type': 'multipart/form-data'
+    })
+  }
 
   constructor(private http: HttpClient) { }
 
@@ -109,7 +114,7 @@ export class RegistroDatosService {
 
       var sPC = pC.split(".");
       var ssPC ="";
-      
+
       if(sPC.length === 2){
         ssPC = sPC[0] + "," + sPC[1];
       }else{
@@ -134,6 +139,19 @@ export class RegistroDatosService {
     console.log("paso2");
 
   }
+  cargarContenidoPDF(uploadedFiles){
+    const formData = new FormData();
+    console.log('img: ', uploadedFiles[0]);
+    formData.append("myFile", uploadedFiles[0], uploadedFiles[0].name);
 
+    this.http.post('http://localhost:3000/ofertaacademica' , formData).subscribe(
+      res => {
+        console.log("servidor: ",res);
+      }, err =>{
+        console.error(err);
+        alert("Error en el registro ");
+      }
+    );
+  }
 
 }
